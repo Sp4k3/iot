@@ -1,6 +1,5 @@
 import React from 'react'
 import PluginActionButton from "./PluginActionButton"
-import ReactBootstrapSlider from "react-bootstrap-slider"
 import { sendRequest } from '../utils/serverhome-api'
 import './VSX.css';
 
@@ -32,14 +31,12 @@ class VSX extends React.Component {
                     <PluginActionButton pluginName="vsx" name="📺" action="channelTV" />
                     <PluginActionButton pluginName="vsx" name="🎮" action="channelGame" />
                 </div>
-                <ReactBootstrapSlider
+                {/* A tester si le onchange du input range fonctionne */}
+                <input
+                    class="rounded-lg overflow-hidden appearance-none bg-gray-400 h-3 w-128"
+                    type="range" min="1" max="60" step="1"
                     value={this.state.currentValue}
-                    slideStop={this.changeValue}
-                    step={1}
-                    max={60}
-                    min={0}
-                    orientation="honrizontal"
-                    reversed={false}
+                    onChange={this.changeValue}
                 />
             </div>
         );
