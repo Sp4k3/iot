@@ -20,7 +20,13 @@ app.use(basicAuth({
 }));
 //create server and socket
 var server = require('http').createServer(app);
-var io = require('socket.io')(server, { pingTimeout: 30000 });
+var io = require('socket.io')(server, {
+  pingTimeout: 30000,
+  cors: {
+    origin: "http://localhost:3000",
+    credentials: true
+  }
+});
 
 require('socketio-auth')(io, {
   authenticate: function (socket, data, callback) {
