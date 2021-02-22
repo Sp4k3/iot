@@ -1,0 +1,34 @@
+{
+  "name": "serverhome",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "actions-on-google": "^2.13.0",
+    "body-parser": "^1.19.0",
+    "casper": "^0.1.1",
+    "cheerio": "1.0.0-rc.5",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-basic-auth": "^1.2.0",
+    "localenv": "^0.2.2",
+    "node-hue-api": "5.0.0-beta.2",
+    "node-schedule": "^2.0.0",
+    "nodemon": "^2.0.7",
+    "phantom": "^6.3.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
+    "socket.io": "^3.1.1",
+    "socketio-auth": "^0.1.1",
+    "spooky": "^0.2.5",
+    "sync-request": "^6.1.0",
+    "telnet-client": "^1.4.6",
+    "webpage": "^0.3.0"
+  }
+}
