@@ -1,6 +1,6 @@
 import React from 'react'
 import VoiceRecognition from './VoiceRecognition'
-import { Form, FormGroup,FormControl, ControlLabel, Button, Glyphicon } from 'react-bootstrap'
+import { Form, FormGroup,FormControl, FormLabel, Button, Glyphicon } from 'react-bootstrap'
 import {subscribeToEvent, emitEvent, sendRequest} from '../utils/serverhome-api'
 import './Wikipedia.css';
 
@@ -76,7 +76,7 @@ class Wikipedia extends React.Component {
                 <Form onSubmit={this.handleSubmit} inline>
                     
                     <FormGroup controlId="formInlineName">
-                        <ControlLabel>Search</ControlLabel>{' '}
+                        <FormLabel>Search</FormLabel>{' '}
                         <FormControl type="text" placeholder="terms" value={this.state.searchValue} onChange={this.handleChange} />
                     </FormGroup>{' '}
                     <Button type="submit"><Glyphicon glyph="search" /> </Button>

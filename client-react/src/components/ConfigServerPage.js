@@ -1,6 +1,6 @@
 import React from 'react'
 import {setServerAuthInfo, getServerAuthInfo} from '../utils/authservice'
-import { Form, FormGroup, FormControl, Col, ControlLabel, Button  } from 'react-bootstrap'
+import { Form, FormGroup, FormControl, Col, FormLabel, Button  } from 'react-bootstrap'
 
 class ConfigServerPage extends React.Component {
     
@@ -34,7 +34,7 @@ class ConfigServerPage extends React.Component {
             <div className="configuration-form">
                 <Form horizontal onSubmit={this.handleSubmit}>
                 <FormGroup controlId="formHorizontalServer">
-                    <Col componentClass={ControlLabel} sm={2}>
+                    <Col componentClass={FormLabel} sm={2}>
                         Server
                     </Col>
                   <Col sm={10}>
@@ -42,7 +42,7 @@ class ConfigServerPage extends React.Component {
                   </Col>
                 </FormGroup>
                 <FormGroup controlId="formHorizontalUsername">
-                  <Col componentClass={ControlLabel} sm={2}>
+                  <Col componentClass={FormLabel} sm={2}>
                     Username
                   </Col>
                   <Col sm={10}>
@@ -50,7 +50,7 @@ class ConfigServerPage extends React.Component {
                   </Col>
                 </FormGroup>
                 <FormGroup controlId="formHorizontalPassword">
-                  <Col componentClass={ControlLabel} sm={2}>
+                  <Col componentClass={FormLabel} sm={2}>
                     Password
                   </Col>
                   <Col sm={10}>
