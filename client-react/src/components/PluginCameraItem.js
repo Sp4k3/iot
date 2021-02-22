@@ -1,45 +1,46 @@
 import React, { Component } from 'react'
-import {subscribeToEvent, emitEvent} from '../utils/serverhome-api'
-import { Image, Glyphicon, Button  } from 'react-bootstrap'
+import { subscribeToEvent, emitEvent } from '../utils/serverhome-api'
 
 class PluginCameraItem extends Component {
-    
-    constructor(props){
+
+    constructor(props) {
         super(props);
-	this.state = { source: "",
-                       start : this.props.data};
+        this.state = {
+            source: "",
+            start: this.props.data
+        };
     }
-    
-    componentDidMount(){
-        var self= this;
-        subscribeToEvent(this.props.name, function(data){
-            var sourceData =  'data:image/jpeg;base64,' + data.buffer ;
-            self.setState({ source: sourceData});
+
+    componentDidMount() {
+        var self = this;
+        subscribeToEvent(this.props.name, function (data) {
+            var sourceData = 'data:image/jpeg;base64,' + data.buffer;
+            self.setState({ source: sourceData });
         });
     }
-    
-    stopCamera(){
-        emitEvent(this.props.name+".stop", this.props.name);
-        this.setState({ start: false});
+
+    stopCamera() {
+        emitEvent(this.props.name + ".stop", this.props.name);
+        this.setState({ start: false });
     }
-    
-    startCamera(){
-        emitEvent(this.props.name+".start", this.props.name);
-        this.setState({ start: true});
+
+    startCamera() {
+        emitEvent(this.props.name + ".start", this.props.name);
+        this.setState({ start: true });
     }
-    
+
     render() {
-        var actionButton = !this.state.start ? 
-            <Button bsSize="xsmall" bsStyle="info" onClick={this.startCamera.bind(this)}><Glyphicon glyph="play"/> </Button> : 
-            <Button bsSize="xsmall" bsStyle="warning" onClick={this.stopCamera.bind(this)}><Glyphicon glyph="stop"/> </Button>;
-        
+        var actionButton = !this.state.start ?
+            <button onClick={this.startCamera.bind(this)}>▶️</button> :
+            <button onClick={this.stopCamera.bind(this)}>⏸</button>;
+
         var imageCamera = !this.state.start ?
-            <Image src="/videosurveillance.png" alt={this.props.name} responsive={true}/> : "";
+            <img src="/videosurveillance.png" alt={this.props.name} /> : "";
         return (
             <div className="cameraitem">
                 <h5>{this.props.name}</h5>
                 {actionButton}
-                <Image src={this.state.source} alt="no video" responsive={true}/>
+                <img src={this.state.source} alt="no video" />
                 {imageCamera}
             </div>
         );
