@@ -8,8 +8,6 @@
     "pcre-to-regexp": "1.1.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
-    "react-bootstrap-slider": "^3.0.0",
-    "react-bootstrap-switch": "^15.5.3",
     "react-burger-menu": "^3.0.3",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
