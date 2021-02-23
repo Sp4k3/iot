@@ -19,8 +19,8 @@ class App extends Component {
         return (
             <div className="App bg-gray-50">
                 <MenuPanel />
-                <div class="py-12 flex-1 min-w-0">
-                    <h1 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                <div className="py-12 flex-1 min-w-0">
+                    <h1 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
                         MerryHome
                     </h1>
                 </div>

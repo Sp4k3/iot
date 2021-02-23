@@ -17,7 +17,7 @@ class PluginSwitchButton extends Component {
             <div className="switch-button">
                 <span><strong>{this.props.name}</strong></span><br />
                 <span>device : {this.props.device}</span><br /><br />
-                {/* switch à tester */}
+                {/* switch à tester, présent uniquement pour l'ampoule philipshue */}
                 <div className="flex items-center justify-center w-full mb-24">
                     <label htmlFor="toogleA" className="flex items-center cursor-pointer">
                         <div className="mr-3 text-gray-700 font-medium">

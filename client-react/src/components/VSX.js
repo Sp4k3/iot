@@ -10,13 +10,16 @@ class VSX extends React.Component {
         this.state = {
             currentValue: 10
         };
-        this.changeValue.bind(this);
+        this.changeValue = this.changeValue.bind(this);
     }
 
     changeValue(event) {
         console.log("set vsx volume : " + event.target.value);
         sendRequest("vsx", "setVolumeSound", { value: event.target.value }).then((data) => {
             console.log(data);
+        });
+        this.setState({
+            currentValue: event.target.value
         });
     }
 
@@ -31,13 +34,13 @@ class VSX extends React.Component {
                     <PluginActionButton pluginName="vsx" name="📺" action="channelTV" />
                     <PluginActionButton pluginName="vsx" name="🎮" action="channelGame" />
                 </div>
-                {/* A tester si le onchange du input range fonctionne */}
                 <input
-                    class="rounded-lg overflow-hidden appearance-none bg-gray-400 h-3 w-128"
+                    className="rounded-lg overflow-hidden appearance-none bg-gray-400 w-128 focus:outline-none focus:border-transparent"
                     type="range" min="1" max="60" step="1"
                     value={this.state.currentValue}
                     onChange={this.changeValue}
                 />
+                <span className="ml-3">{this.state.currentValue}</span>
             </div>
         );
     }
