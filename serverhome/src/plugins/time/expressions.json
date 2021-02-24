@@ -1,5 +1,7 @@
-{ 
-    "time1" : "il est quelle heure",
-    "time2" : "quelle heure est-il",
-    "time3" : "donne-moi l'heure" 
+{
+	"time1": "il est quelle heure",
+	"time2": "quelle heure est-il",
+	"time3": "donne-moi l'heure",
+	"day1": "quel jour sommes-nous",
+	"day2": "quelle est la date d'aujourd'hui"
 }

@@ -54,7 +54,8 @@ export default (io) => {
     for (let i = 0; i < plugins.length; i++) {
       const pathExpressions = pluginsFolder + '/' + plugins[i] + '/expressions.json'
       if (fs.existsSync(pathExpressions)) {
-        const expressions = await import(pathExpressions)
+        let expressions = await import(pathExpressions)
+        expressions = expressions.default
         allExpression[plugins[i]] = expressions
       }
     }
@@ -67,7 +68,8 @@ export default (io) => {
     for (let i = 0; i < plugins.length; i++) {
       const pathConfig = pluginsFolder + '/' + plugins[i] + '/config.json'
       if (fs.existsSync(pathConfig)) {
-        const config = await import(pathConfig)
+        let config = await import(pathConfig)
+        config = config.default
         allConfigs[plugins[i]] = config
       }
     }
