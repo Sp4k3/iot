@@ -3,6 +3,7 @@ import PluginItem from "./PluginItem"
 // import AndroidTV from "./AndroidTV"
 // import VSX from "./VSX"
 import Wikipedia from "./Wikipedia"
+import Covid from "./Covid"
 
 export default function PluginContent(props) {
     if (props.viewInfo.type === "listItem") {
@@ -19,6 +20,9 @@ export default function PluginContent(props) {
     // }
     else if (props.viewInfo.type === "Wikipedia") {
         return <Wikipedia />;
+    }
+    else if (props.viewInfo.type === "Covid") {
+        return <Covid />;
     }
     // else if (props.viewInfo.type === "VSX") {
     //     return <VSX />;
