@@ -47,7 +47,6 @@ const whatIs = (req, res, requestUrl) => {
 
 const scrapWiki = (io) => {
   io.sockets.on('connection', (socket) => {
-    console.log('connexion')
     socket.on('wikipediasearch', (searchvalue) => {
       console.log('Search on Wikipedia term : ' + searchvalue)
       let isTable = true

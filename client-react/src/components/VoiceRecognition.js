@@ -11,11 +11,10 @@ const VoiceRecognition = ({ callback }) => {
 
     useEffect(() => {
         if (!isConfigured()) return;
-        console.log('callback', callback)
         getExpressions().then((expressions) => {
             subscribeServerSays();
             if (recognition) {
-                recognition.onresult = (event) => {
+                recognition.onresult = async (event) => {
                     var result = event.results[event.results.length - 1];
                     if (result.isFinal) {
                         var objRequest = searchRequest(result[0].transcript, expressions);
@@ -25,10 +24,8 @@ const VoiceRecognition = ({ callback }) => {
                         });
                         //si un callback est definit on transmet l'information par la fonction.  
                         if (callback) {
-                            console.log('objRequest dans callback', objRequest)
-                            callback(objRequest);
+                            await callback(objRequest);
                         } else if (objRequest && objRequest.plugin) {
-                            console.log('objRequest', objRequest)
                             sendData(objRequest);
                         }
                     }
@@ -59,6 +56,9 @@ const VoiceRecognition = ({ callback }) => {
     const start = async () => {
         await SpeechRecognition.startListening()
     }
+    const stop = async () => {
+        await SpeechRecognition.stopListening()
+    }
 
 
     if (!isConfigured()) {
@@ -76,7 +76,7 @@ const VoiceRecognition = ({ callback }) => {
                     <span>👂</span>
                     <button
                         className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                        onClick={SpeechRecognition.stopListening}>⏸ Stop</button>
+                        onClick={stop}>⏸ Stop</button>
                 </>
                 :
                 <>

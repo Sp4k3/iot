@@ -7,8 +7,8 @@ services:
   server:
     build: ./serverhome
     environment:
-      SERVER_USERNAME: ${SERVER_USERNAME}
-      SERVER_PASSWORD: ${SERVER_PASSWORD}
+      SERVER_USERNAME: ${SERVER_USERNAME:-username}
+      SERVER_PASSWORD: ${SERVER_PASSWORD:-password}
     ports: 
       - ${SERVER_PORT:-3300}:3300
       # - 9229:9229 # Only for debuging nodejs server in Chrome DevTools
