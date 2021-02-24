@@ -27,10 +27,10 @@ class Wikipedia extends React.Component {
     handleSubmit(event) {
         console.log("emit event wikipediasearch : " + this.state.searchValue);
         emitEvent("wikipediasearch", this.state.searchValue);
-        var self = this;
+        let self = this;
         sendRequest("wikipedia", "whatis", { searchValue: this.state.searchValue }).then((data) => {
             if (data.resultText) {
-                var utterThis = new SpeechSynthesisUtterance(data.resultText);
+                let utterThis = new SpeechSynthesisUtterance(data.resultText);
                 utterThis.lang = 'fr-FR';
                 console.log({ "response": data.resultText });
                 window.speechSynthesis.speak(utterThis);
@@ -44,14 +44,14 @@ class Wikipedia extends React.Component {
     }
 
     componentDidMount() {
-        var self = this;
-        subscribeToEvent("wikipediaresult", function (data) {
+        let self = this;
+        subscribeToEvent("wikipediaresult", (data) => {
             self.setState({
                 searchResult: data.infos.replace(new RegExp("/wiki/", 'g'), "/plugin/wikipedia/"),
                 isTable: data.isTable
             });
         });
-        var lastPart = window.location.href.split("/").pop();
+        const lastPart = window.location.href.split("/").pop();
         if (lastPart !== "wikipedia") {
             this.setState({ searchValue: lastPart });
             this.handleSubmit(null);
@@ -73,7 +73,7 @@ class Wikipedia extends React.Component {
     }
 
     render() {
-        var result = this.state.searchResult ?
+        const result = this.state.searchResult ?
             (this.state.isTable ?
                 <table dangerouslySetInnerHTML={{ __html: this.state.searchResult }} /> :
                 <div dangerouslySetInnerHTML={{ __html: this.state.searchResult }} />)

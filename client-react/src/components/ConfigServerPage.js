@@ -5,7 +5,7 @@ class ConfigServerPage extends React.Component {
 
   constructor(props) {
     super(props);
-    var serverInfo = getServerAuthInfo();
+    const serverInfo = getServerAuthInfo();
     this.state = {
       server: serverInfo.server ? serverInfo.server : "",
       username: serverInfo.username ? serverInfo.username : "",

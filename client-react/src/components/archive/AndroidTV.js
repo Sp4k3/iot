@@ -4,7 +4,7 @@ import './AndroidTV.css';
 
 class AndroidTV extends React.Component {
     render() {
-        var props = this.props;
+        const props = this.props;
         return (
             <div className='plugincontent plugin-androidtv'>
                 <div className="buttonscontrols">

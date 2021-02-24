@@ -12,9 +12,9 @@ class PluginCameraItem extends Component {
     }
 
     componentDidMount() {
-        var self = this;
-        subscribeToEvent(this.props.name, function (data) {
-            var sourceData = 'data:image/jpeg;base64,' + data.buffer;
+        let self = this;
+        subscribeToEvent(this.props.name, (data) => {
+            const sourceData = 'data:image/jpeg;base64,' + data.buffer;
             self.setState({ source: sourceData });
         });
     }
@@ -30,11 +30,11 @@ class PluginCameraItem extends Component {
     }
 
     render() {
-        var actionButton = !this.state.start ?
+        const actionButton = !this.state.start ?
             <button onClick={this.startCamera.bind(this)}>▶️</button> :
             <button onClick={this.stopCamera.bind(this)}>⏸</button>;
 
-        var imageCamera = !this.state.start ?
+        const imageCamera = !this.state.start ?
             <img src="/videosurveillance.png" alt={this.props.name} /> : "";
         return (
             <div className="cameraitem">

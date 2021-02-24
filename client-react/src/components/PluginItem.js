@@ -3,7 +3,7 @@ import PluginActionButton from "./PluginActionButton"
 // import PluginSwitchButton from "./PluginSwitchButton"
 // import PluginCameraItem from "./PluginCameraItem"
 
-export default function PluginItem(props) {
+const PluginItem = (props) => {
     if (props.itemType === "PluginActionButton") {
         return <PluginActionButton pluginName={props.pluginName} name={props.name} icon={props.icon} action={props.action} data={props.data} />;
     }
@@ -16,3 +16,4 @@ export default function PluginItem(props) {
         return <div></div>;
     }
 }
+export default PluginItem
