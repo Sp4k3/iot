@@ -1,0 +1,5 @@
+{
+	"casfrance": "combien de cas en france",
+	"casdepartement": "combien de cas en (?P<searchValue>.+\\s?.*\\s?.*)",
+	"casmonde": "combien de cas au monde"
+}
