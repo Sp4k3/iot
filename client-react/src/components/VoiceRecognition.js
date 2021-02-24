@@ -5,12 +5,13 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import { getExpressions, sendRequest, subscribeToEvent } from '../utils/serverhome-api'
 import { searchRequest } from '../utils/voice-helper'
 
-const VoiceRecognition = () => {
-    const { transcript, listening, callback } = useSpeechRecognition()
+const VoiceRecognition = ({ callback }) => {
+    const { transcript, listening } = useSpeechRecognition()
     const recognition = SpeechRecognition.getRecognition()
 
     useEffect(() => {
         if (!isConfigured()) return;
+        console.log('callback', callback)
         getExpressions().then((expressions) => {
             subscribeServerSays();
             if (recognition) {
@@ -24,7 +25,7 @@ const VoiceRecognition = () => {
                         });
                         //si un callback est definit on transmet l'information par la fonction.  
                         if (callback) {
-                            console.log("dans callback")
+                            console.log('objRequest dans callback', objRequest)
                             callback(objRequest);
                         } else if (objRequest && objRequest.plugin) {
                             console.log('objRequest', objRequest)
@@ -55,6 +56,10 @@ const VoiceRecognition = () => {
             }
         });
     }
+    const start = async () => {
+        await SpeechRecognition.startListening()
+    }
+
 
     if (!isConfigured()) {
         return <div>Configurer le server de merry home ;)</div>;
@@ -78,7 +83,7 @@ const VoiceRecognition = () => {
                     <span>🎤</span>
                     <button
                         className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-                        onClick={SpeechRecognition.startListening}>▶️ Start</button>
+                        onClick={start}>▶️ Start</button>
                 </>
             }
             <p>{transcript}</p>

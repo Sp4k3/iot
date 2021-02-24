@@ -59,7 +59,7 @@ class Wikipedia extends React.Component {
     }
 
     callbackVoice(voiceInfo) {
-        console.log(voiceInfo);
+        console.log("voiceInfo", voiceInfo);
         if (voiceInfo.data.searchValue) {
             this.setState({ searchValue: voiceInfo.data.searchValue });
             this.handleSubmit();
