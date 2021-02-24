@@ -60,9 +60,15 @@ class Wikipedia extends React.Component {
 
     callbackVoice(voiceInfo) {
         console.log("voiceInfo", voiceInfo);
-        if (voiceInfo.data.searchValue) {
+        if (voiceInfo?.data.searchValue) {
             this.setState({ searchValue: voiceInfo.data.searchValue });
             this.handleSubmit();
+        } else {
+            const sentence = 'Je n\'ai pas compris votre demande'
+            const utterThis = new SpeechSynthesisUtterance(sentence);
+            utterThis.lang = 'fr-FR';
+            console.log({ "response": sentence });
+            window.speechSynthesis.speak(utterThis);
         }
     }
 
