@@ -1,0 +1,40 @@
+version: '3.5'
+
+services:
+  ##########################
+  # Setup server container #   
+  ##########################
+  server:
+    build: ./serverhome
+    environment:
+      SERVER_USERNAME: ${SERVER_USERNAME}
+      SERVER_PASSWORD: ${SERVER_PASSWORD}
+    ports: 
+      - ${SERVER_PORT:-3300}:3300
+      # - 9229:9229 # Only for debuging nodejs server in Chrome DevTools
+    volumes:
+      - ./serverhome:/app
+    restart: on-failure
+    command: npm run dev   
+    networks:
+      - iot-network
+
+  ##########################
+  # Setup client container #  
+  ##########################
+  client:
+    build: ./client-react
+    ports: 
+      - ${CLIENT_PORT:-3000}:3000
+    volumes:
+      - ./client-react:/app
+    restart: on-failure
+    command: npm start
+    networks:
+      - iot-network
+
+networks:
+  iot-network:
+    driver: bridge
+    # driver_opts:
+      # com.docker.network.driver.mtu: 1450
