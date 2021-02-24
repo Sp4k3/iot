@@ -1,5 +1,2 @@
 node_modules/
 .DS_Store
-server/
-.env
-docker-compose.yml
