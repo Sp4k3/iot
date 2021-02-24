@@ -7,12 +7,12 @@ class Covid extends React.Component {
 
     constructor(props) {
         super(props);
-        this.expression = "casfrance";
         this.state = {
             searchValue: "",
             shortResult: "",
             isTable: false,
-            searchResult: null
+            searchResult: null,
+            expression: "casfrance"
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -29,7 +29,7 @@ class Covid extends React.Component {
         console.log("emit event covidsearch : " + this.state.searchValue);
         emitEvent("covidsearch", this.state.searchValue);
         var self = this;
-        sendRequest("covid", this.expression, { searchValue: this.state.searchValue }).then((data) => {
+        sendRequest("covid", this.state.expression, { searchValue: this.state.searchValue }).then((data) => {
             if (data.resultText) {
                 var utterThis = new SpeechSynthesisUtterance(data.resultText);
                 utterThis.lang = 'fr-FR';
@@ -60,8 +60,9 @@ class Covid extends React.Component {
     }
 
     callbackVoice(voiceInfo) {
+        this.setState({ expression: "casdepartement" })
         console.log("voiceInfo", voiceInfo);
-        if (voiceInfo.data.searchValue) {
+        if (voiceInfo?.data.searchValue) {
             this.setState({ searchValue: voiceInfo.data.searchValue });
             this.handleSubmit();
         }
@@ -87,7 +88,7 @@ class Covid extends React.Component {
 
                             <div>
                                 <button
-                                    onClick={() => (this.expression = "casfrance")}
+                                    onClick={() => (this.setState({ expression: "casfrance" }))}
                                     type="submit"
                                     className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     Cas France
@@ -116,14 +117,14 @@ class Covid extends React.Component {
 
                             <div>
                                 <button
-                                    onClick={() => (this.expression = "casdepartement")}
+                                    onClick={() => (this.setState({ expression: "casdepartement" }))}
                                     type="submit"
                                     className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     Search
                                 </button>
-                                <VoiceRecognition callback={this.callbackVoice} />
                             </div>
                         </form>
+                        <VoiceRecognition callback={this.callbackVoice} />
                     </div>
                     <div className="shortResult">
                         <cite>{this.state.shortResult}</cite>
