@@ -73,7 +73,6 @@ const scrapWiki = (io) => {
     console.log('connexion')
     socket.on('covidsearch', (searchvalue) => {
       console.log('Search on covid : ' + searchvalue)
-
     })
   })
 }
