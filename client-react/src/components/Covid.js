@@ -8,7 +8,6 @@ const Covid = () => {
     const [shortResult, setShortResult] = useState("");
     const [isTable, setIsTable] = useState(false);
     const [searchResult, setSearchResult] = useState(null);
-    const [expression, setExpression] = useState("casfrance");
 
     const handleChange = (event) => {
         setSearchValue(event.target.value)
@@ -36,7 +35,6 @@ const Covid = () => {
     }, [handleSubmit, searchValue]);
 
     const callbackVoice = (voiceInfo) => {
-        setExpression("casdepartement")
         if (voiceInfo?.data.searchValue) {
             setSearchValue(voiceInfo.data.searchValue);
             callAPI(voiceInfo.data.searchValue)
@@ -51,8 +49,12 @@ const Covid = () => {
 
     const callAPI = (queryValue) => {
         console.log("emit event covidsearch : " + queryValue);
-        emitEvent("covidsearch", queryValue);
-        sendRequest("covid", expression, { searchValue: queryValue }).then((data) => {
+        let exp = ''
+        queryValue = queryValue.trim()
+        queryValue.includes('France') ? exp = 'casfrance' : exp = 'casdepartement'
+        console.log(queryValue)
+        console.log('exp : ', exp)
+        sendRequest("covid", exp, { searchValue: queryValue }).then((data) => {
             if (data.resultText) {
                 let utterThis = new SpeechSynthesisUtterance(data.resultText);
                 utterThis.lang = 'fr-FR';
@@ -74,7 +76,6 @@ const Covid = () => {
                 <form className="space-y-6" action="#" method="POST" onSubmit={handleSubmit}>
                     <div>
                         <button
-                            onClick={() => (setExpression("casfrance"))}
                             type="submit"
                             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Cas France
@@ -102,7 +103,6 @@ const Covid = () => {
 
                     <div>
                         <button
-                            onClick={() => (setExpression("casdepartement"))}
                             type="submit"
                             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Search
