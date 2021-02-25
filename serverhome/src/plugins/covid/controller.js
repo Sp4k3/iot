@@ -39,7 +39,7 @@ const getDepartement = (req, res, requestUrl) => {
   requestUrl += req.body.searchValue
   const wikiReq = request('GET', requestUrl, { cache: 'file' })
   const response = JSON.parse(wikiReq.getBody('utf8'))
-  const textResponse = parseDataResponse(response.LiveDataByDepartement[0])
+  const textResponse = response.LiveDataByDepartement[0]
   if (!textResponse) {
     res.end(JSON.stringify({ resultText: "je n'ai pas d'informations" }))
   } else {
@@ -51,21 +51,12 @@ const getFrance = (req, res, requestUrl) => {
   requestUrl += 'FranceLiveGlobalData'
   const wikiReq = request('GET', requestUrl, { cache: 'file' })
   const response = JSON.parse(wikiReq.getBody('utf8'))
-  const textResponse = parseDataResponse(response.FranceGlobalLiveData[0])
+  const textResponse = response.FranceGlobalLiveData[0]
   if (!textResponse) {
     res.end(JSON.stringify({ resultText: "je n'ai pas d'informations" }))
   } else {
     res.end(JSON.stringify({ resultText: textResponse }))
   }
-}
-
-const parseDataResponse = (response) => {
-  if (response) {
-    let textResponse = ''
-    textResponse = response.nom + ' ' + response.date + ' : ' + response.nouvellesHospitalisations + ' hospitalisations'
-    return textResponse
-  }
-  return false
 }
 
 const scrapWiki = (io) => {
