@@ -72,20 +72,18 @@ const VoiceRecognition = ({ callback }) => {
     }
 
     return (
-        <div className="voicerecognition">
+        <div className="voicerecognition py-2">
             {listening ?
                 <>
-                    <span>👂</span>
                     <button
-                        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                        onClick={stop}>⏸ Stop</button>
+                        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                        onClick={stop}>Stop</button>
                 </>
                 :
                 <>
-                    <span>🎤</span>
                     <button
-                        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-                        onClick={start}>▶️ Start</button>
+                        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                        onClick={start}>Start</button>
                 </>
             }
             <p>{transcript}</p>

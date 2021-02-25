@@ -19,7 +19,7 @@ const App = () => {
     return (
         <div className="App">
             <MenuPanel />
-            <div className="flex flex-col justify-center sm:px-6 lg:px-8">
+            <div className="flex flex-col justify-center sm:px-6 lg:px-32 pt-10">
                 <Router>
                     <div>
                         <Route exact path="/" component={VoiceRecognition} />

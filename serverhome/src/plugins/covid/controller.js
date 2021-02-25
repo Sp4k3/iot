@@ -36,7 +36,8 @@ const covidController = (io) => {
 
 const getDepartement = (req, res, requestUrl) => {
   requestUrl += 'LiveDataByDepartement?Departement='
-  requestUrl += req.body.searchValue
+  requestUrl += req.body.searchValue.trim()
+  console.log(requestUrl)
   const wikiReq = request('GET', requestUrl, { cache: 'file' })
   const response = JSON.parse(wikiReq.getBody('utf8'))
   const textResponse = response.LiveDataByDepartement[0]
