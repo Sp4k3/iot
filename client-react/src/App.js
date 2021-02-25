@@ -17,14 +17,9 @@ const App = () => {
     });
 
     return (
-        <div className="App bg-gray-50">
+        <div className="App">
             <MenuPanel />
-            <div className="py-12 flex-1 min-w-0">
-                <h1 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
-                    MerryHome
-                    </h1>
-            </div>
-            <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+            <div className="flex flex-col justify-center sm:px-6 lg:px-8">
                 <Router>
                     <div>
                         <Route exact path="/" component={VoiceRecognition} />

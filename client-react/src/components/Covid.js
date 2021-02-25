@@ -56,7 +56,9 @@ const Covid = () => {
         console.log('exp : ', exp)
         sendRequest("covid", exp, { searchValue: queryValue }).then((data) => {
             if (data.resultText) {
-                let utterThis = new SpeechSynthesisUtterance(data.resultText);
+                const response = data.resultText
+                const sentence = response.nom + ' ' + response.date + ' : ' + response.nouvellesHospitalisations + ' hospitalisations'
+                let utterThis = new SpeechSynthesisUtterance(sentence);
                 utterThis.lang = 'fr-FR';
                 console.log({ "response": data.resultText });
                 window.speechSynthesis.speak(utterThis);
@@ -65,11 +67,6 @@ const Covid = () => {
         });
     }
 
-    const result = searchResult ?
-        (isTable ?
-            <table dangerouslySetInnerHTML={{ __html: searchResult }} /> :
-            <div dangerouslySetInnerHTML={{ __html: searchResult }} />)
-        : "";
     return (
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
@@ -80,12 +77,6 @@ const Covid = () => {
                             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Cas France
                         </button>
-                        {/* <button
-                            onClick={() => (setExpression("casmonde"))}
-                            type="submit"
-                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Cas Monde
-                        </button> */}
                         <label htmlFor="server" className="block text-sm font-medium text-gray-700">
                             Search by department
                                 </label>
@@ -111,14 +102,27 @@ const Covid = () => {
                 </form>
                 <VoiceRecognition callback={callbackVoice} />
             </div>
-            <div className="shortResult">
-                <cite>{shortResult}</cite>
-            </div>
-            <div className="result">
-                {result}
-            </div>
+            {shortResult?.nom ?
+                <div className="max-w-2xl mx-auto sm:px-6 lg:px-8 mt-5">
+                    <div className="overflow-hidden shadow-md">
+                        <div className="px-6 py-4 bg-white border-b border-gray-200 font-bold uppercase">
+                            {shortResult.nom} - {shortResult.date}
+                        </div>
+
+                        <div className="p-6 bg-white border-b border-gray-200 text-left">
+                            Nouvelles hospitalisations : {shortResult.nouvellesHospitalisations} <br></br>
+                            Nombre total de décès : {shortResult.deces}  <br></br>
+                        </div>
+
+                        <div className="p-6 bg-white border-gray-200 text-right text-xs">
+                            Source : {shortResult.source.nom}
+                        </div>
+                    </div>
+                </div>
+                :
+                <div></div>
+            }
         </div>
     );
 };
-
 export default Covid;
