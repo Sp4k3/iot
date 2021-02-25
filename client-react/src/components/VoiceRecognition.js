@@ -15,7 +15,7 @@ const VoiceRecognition = ({ callback }) => {
             subscribeServerSays();
             if (recognition) {
                 recognition.onresult = async (event) => {
-                    var result = event.results[event.results.length - 1];
+                    const result = event.results[event.results.length - 1];
                     if (result.isFinal) {
                         const objRequest = searchRequest(result[0].transcript, expressions);
                         console.log({
@@ -24,8 +24,10 @@ const VoiceRecognition = ({ callback }) => {
                         });
                         //si un callback est definit on transmet l'information par la fonction.  
                         if (callback) {
+                            console.log('objRequest dans callback', objRequest)
                             await callback(objRequest);
                         } else if (objRequest && objRequest.plugin) {
+                            console.log('objRequest', objRequest)
                             sendData(objRequest);
                         }
                     }
@@ -56,10 +58,10 @@ const VoiceRecognition = ({ callback }) => {
     const start = async () => {
         await SpeechRecognition.startListening()
     }
+
     const stop = async () => {
         await SpeechRecognition.stopListening()
     }
-
 
     if (!isConfigured()) {
         return <div>Configurer le server de merry home ;)</div>;
