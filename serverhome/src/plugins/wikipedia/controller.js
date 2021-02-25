@@ -10,6 +10,7 @@ const wikipediaController = (io) => {
     scrapWiki(io)
   }
 
+
   const postAction = (req, res) => {
     let requestUrl = 'https://fr.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles='
     requestUrl += parseDataSend(req.body.searchValue)
@@ -50,7 +51,11 @@ const scrapWiki = (io) => {
     socket.on('wikipediasearch', (searchvalue) => {
       console.log('Search on Wikipedia term : ' + searchvalue)
       let isTable = true
-      rp(url + searchvalue)
+      const urlToSearch = url + searchvalue
+        .split(' ')
+        .map(el => el.charAt(0).toUpperCase() + el.slice(1))
+        .join('_')
+      rp(urlToSearch)
         .then(html => {
           const title = $('.firstHeading', html).text()
           let infos = $('.infobox_v2', html).html()
@@ -64,7 +69,7 @@ const scrapWiki = (io) => {
           socket.emit('wikipediaresult', { title: title, infos: infos, isTable: isTable })
         })
         .catch(err => {
-          console.log(err)
+          console.log('ERREUR')
         })
     })
   })
@@ -101,7 +106,7 @@ const parseDataResponse = (response) => {
           if (textResponse.length > 300) {
             textResponse = textResponse.substr(0, textResponse.indexOf('.'))
           }
-          console.log(textResponse)
+          // console.log(textResponse)
           return textResponse
         }
       }

@@ -15,17 +15,19 @@ const VoiceRecognition = ({ callback }) => {
             subscribeServerSays();
             if (recognition) {
                 recognition.onresult = async (event) => {
-                    var result = event.results[event.results.length - 1];
+                    const result = event.results[event.results.length - 1];
                     if (result.isFinal) {
-                        var objRequest = searchRequest(result[0].transcript, expressions);
+                        const objRequest = searchRequest(result[0].transcript, expressions);
                         console.log({
                             "transcript": result[0].transcript,
                             "data": objRequest
                         });
                         //si un callback est definit on transmet l'information par la fonction.  
                         if (callback) {
+                            console.log('objRequest dans callback', objRequest)
                             await callback(objRequest);
                         } else if (objRequest && objRequest.plugin) {
+                            console.log('objRequest', objRequest)
                             sendData(objRequest);
                         }
                     }
@@ -35,8 +37,8 @@ const VoiceRecognition = ({ callback }) => {
     });
 
     const subscribeServerSays = () => {
-        subscribeToEvent("serversays", function (data) {
-            var utterThis = new SpeechSynthesisUtterance(data);
+        subscribeToEvent("serversays", (data) => {
+            let utterThis = new SpeechSynthesisUtterance(data);
             utterThis.lang = 'fr-FR';
             console.log({ "event server says": data });
             window.speechSynthesis.speak(utterThis);
@@ -46,7 +48,7 @@ const VoiceRecognition = ({ callback }) => {
     const sendData = (objRequest) => {
         sendRequest(objRequest.plugin, objRequest.action, objRequest.data).then((data) => {
             if (data.resultText) {
-                var utterThis = new SpeechSynthesisUtterance(data.resultText);
+                let utterThis = new SpeechSynthesisUtterance(data.resultText);
                 utterThis.lang = 'fr-FR';
                 console.log({ "response": data.resultText });
                 window.speechSynthesis.speak(utterThis);
@@ -56,10 +58,10 @@ const VoiceRecognition = ({ callback }) => {
     const start = async () => {
         await SpeechRecognition.startListening()
     }
+
     const stop = async () => {
         await SpeechRecognition.stopListening()
     }
-
 
     if (!isConfigured()) {
         return <div>Configurer le server de merry home ;)</div>;

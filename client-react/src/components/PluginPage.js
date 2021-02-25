@@ -1,31 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import PluginContent from './PluginContent'
-import {getPluginView} from '../utils/serverhome-api'
+import { getPluginView } from '../utils/serverhome-api'
 
-class PluginPage extends React.Component {
-    
-    constructor(props){
-        super(props);
-	this.state = { pluginView: {}};
-    }
-    
-    componentDidMount(){
-        getPluginView(this.props.match.params.pluginName).then((data)=>{
-            this.setState({ pluginView: data});
+const PluginPage = ({ match }) => {
+
+    const [pluginView, setPluginView] = useState({});
+
+    useEffect(() => {
+        getPluginView(match.params.pluginName).then((data) => {
+            setPluginView(data);
         });
-    }
-    
-    render() {
-        let pluginName = this.props.match.params.pluginName;
-        let pluginView = this.state.pluginView;
-        return (
-            <div>
-                <h3>{pluginName}</h3>
-                <PluginContent viewInfo={pluginView} pluginName={pluginName} />     
-            </div>
-        );    
-    }
+    }, [match.params.pluginName]);
+
+    const pluginName = match.params.pluginName;
+    return (
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                {pluginName}
+            </h2>
+            <PluginContent viewInfo={pluginView} pluginName={pluginName} />
+        </div>
+    );
 };
 
 export default PluginPage;
