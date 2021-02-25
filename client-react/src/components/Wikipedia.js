@@ -14,18 +14,7 @@ const Wikipedia = () => {
     }
 
     const handleSubmit = useCallback((event) => {
-        console.log("emit event wikipediasearch : " + searchValue);
-        emitEvent("wikipediasearch", searchValue);
-        sendRequest("wikipedia", "whatis", { searchValue: searchValue }).then((data) => {
-            if (data.resultText) {
-                let utterThis = new SpeechSynthesisUtterance(data.resultText);
-                utterThis.lang = 'fr-FR';
-                console.log({ "response": data.resultText });
-                window.speechSynthesis.speak(utterThis);
-                setShortResult(data.resultText)
-            };
-        }
-        );
+        callAPI(searchValue)
         if (event) event.preventDefault();
     }, [searchValue])
 
@@ -47,8 +36,7 @@ const Wikipedia = () => {
     const callbackVoice = (voiceInfo) => {
         if (voiceInfo?.data.searchValue) {
             setSearchValue(voiceInfo.data.searchValue);
-            console.log('searchValue =>', searchValue)
-            handleSubmit();
+            callAPI(voiceInfo.data.searchValue)
         } else {
             const sentence = 'Je n\'ai pas compris votre demande'
             const utterThis = new SpeechSynthesisUtterance(sentence);
@@ -57,6 +45,20 @@ const Wikipedia = () => {
             window.speechSynthesis.speak(utterThis);
         }
     };
+
+    const callAPI = (queryValue) => {
+        console.log("emit event wikipediasearch : " + queryValue);
+        emitEvent("wikipediasearch", queryValue);
+        sendRequest("wikipedia", "whatis", { searchValue: queryValue }).then((data) => {
+            if (data.resultText) {
+                let utterThis = new SpeechSynthesisUtterance(data.resultText);
+                utterThis.lang = 'fr-FR';
+                console.log({ "response": data.resultText });
+                window.speechSynthesis.speak(utterThis);
+                setShortResult(data.resultText)
+            };
+        });
+    }
 
     const result = searchResult ?
         (isTable ?
