@@ -1,18 +1,13 @@
 import request from 'sync-request'
-import rp from 'request-promise'
-import $ from 'cheerio'
 const url = 'https://coronavirusapi-france.now.sh/'
 
-const covidController = (io) => {
+const covidController = () => {
   const isActive = true
-
-  if (isActive) {
-    scrapWiki(io)
-  }
 
   const postAction = (req, res) => {
     let requestUrl = url
     const dict = {
+      casdepartements: () => getAllDepartement(req, res, requestUrl),
       casdepartement: () => getDepartement(req, res, requestUrl),
       casfrance: () => getFrance(req, res, requestUrl),
       casmonde: () => getFrance(req, res, requestUrl),
@@ -34,39 +29,45 @@ const covidController = (io) => {
   }
 }
 
+const getAllDepartement = (req, res, requestUrl) => {
+  requestUrl += 'AllLiveData'
+  const covidReq = request('GET', requestUrl, { cache: 'file' })
+  const response = JSON.parse(covidReq.getBody('utf8'))
+    res.end(JSON.stringify({ result: response.allLiveFranceData }))
+}
+
 const getDepartement = (req, res, requestUrl) => {
   requestUrl += 'LiveDataByDepartement?Departement='
   requestUrl += req.body.searchValue.trim()
-  console.log(requestUrl)
-  const wikiReq = request('GET', requestUrl, { cache: 'file' })
-  const response = JSON.parse(wikiReq.getBody('utf8'))
-  const textResponse = response.LiveDataByDepartement[0]
+  const covidReq = request('GET', requestUrl, { cache: 'file' })
+  const response = JSON.parse(covidReq.getBody('utf8'))
+  const textResponse = parseDataResponse(response.LiveDataByDepartement[0])
   if (!textResponse) {
     res.end(JSON.stringify({ resultText: "je n'ai pas d'informations" }))
   } else {
-    res.end(JSON.stringify({ resultText: textResponse }))
+    res.end(JSON.stringify({ resultText: textResponse, result: response.LiveDataByDepartement }))
   }
 }
 
 const getFrance = (req, res, requestUrl) => {
   requestUrl += 'FranceLiveGlobalData'
-  const wikiReq = request('GET', requestUrl, { cache: 'file' })
-  const response = JSON.parse(wikiReq.getBody('utf8'))
-  const textResponse = response.FranceGlobalLiveData[0]
+  const covidReq = request('GET', requestUrl, { cache: 'file' })
+  const response = JSON.parse(covidReq.getBody('utf8'))
+  const textResponse = parseDataResponse(response.FranceGlobalLiveData[0])
   if (!textResponse) {
     res.end(JSON.stringify({ resultText: "je n'ai pas d'informations" }))
   } else {
-    res.end(JSON.stringify({ resultText: textResponse }))
+    res.end(JSON.stringify({ resultText: textResponse, result: response.FranceGlobalLiveData }))
   }
 }
 
-const scrapWiki = (io) => {
-  io.sockets.on('connection', (socket) => {
-    console.log('connexion')
-    socket.on('covidsearch', (searchvalue) => {
-      console.log('Search on covid : ' + searchvalue)
-    })
-  })
+const parseDataResponse = (response) => {
+  if (response) {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+    const date = new Date(response.date).toLocaleDateString('fr-FR', options)
+    return response.nom + ', le ' + date + ', il y a eu ' + response.nouvellesHospitalisations + ' nouvelles hospitalisations.'
+  }
+  return false
 }
 
 export default covidController

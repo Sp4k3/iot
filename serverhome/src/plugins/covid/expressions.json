@@ -1,5 +1,5 @@
 {
 	"casfrance": "combien pour la france",
-	"casdepartement": "combien (dans le|à|en|pour la|pour l'|pour le|pour)(?P<searchValue>.+\\s?.*\\s?.*)",
+	"casdepartement": "combien de cas (dans le|à|en|pour la|pour l'|pour le|pour)(?P<searchValue>.+\\s?.*\\s?.*)",
 	"casmonde": "combien au monde"
 }

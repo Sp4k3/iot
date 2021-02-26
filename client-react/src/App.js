@@ -10,26 +10,26 @@ import './App.css';
 
 const App = () => {
 
-    useEffect(() => {
-        if (isConfigured()) {
-            initSocket();
-        }
-    });
+	useEffect(() => {
+		if (isConfigured()) {
+			initSocket();
+		}
+	});
 
-    return (
-        <div className="App">
-            <MenuPanel />
-            <div className="flex flex-col justify-center sm:px-6 lg:px-32 pt-10">
-                <Router>
-                    <div>
-                        <Route exact path="/" component={VoiceRecognition} />
-                        <Route path="/plugin/:pluginName" component={PluginPage} />
-                        <Route path="/configserver" component={ConfigServerPage} />
-                    </div>
-                </Router>
-            </div>
-        </div>
-    );
+	return (
+		<div className="App">
+			<MenuPanel />
+			<div className="flex flex-col justify-center sm:px-6 lg:px-32 pt-4">
+				<Router>
+					<div>
+						<Route exact path="/" component={VoiceRecognition} />
+						<Route path="/plugin/:pluginName" component={PluginPage} />
+						<Route path="/configserver" component={ConfigServerPage} />
+					</div>
+				</Router>
+			</div>
+		</div>
+	);
 };
 
 export default App;

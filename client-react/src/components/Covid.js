@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import VoiceRecognition from './VoiceRecognition'
-import { subscribeToEvent, emitEvent, sendRequest } from '../utils/serverhome-api'
+import { sendRequest } from '../utils/serverhome-api'
 import './Wikipedia.css';
 
 const Covid = () => {
 	const [searchValue, setSearchValue] = useState("");
-	const [shortResult, setShortResult] = useState("");
-	const [isTable, setIsTable] = useState(false);
 	const [searchResult, setSearchResult] = useState(null);
 
 	const handleChange = (event) => {
@@ -16,15 +14,7 @@ const Covid = () => {
 	const handleSubmit = useCallback((event) => {
 		callAPI(searchValue)
 		if (event) event.preventDefault();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchValue])
-
-	useEffect(() => {
-		subscribeToEvent("covidresult", (data) => {
-			setSearchResult(data.infos.replace(new RegExp("/wiki/", 'g'), "/plugin/covid/"))
-			setIsTable(data.isTable)
-		});
-	}, [searchValue]);
 
 	useEffect(() => {
 		const lastPart = window.location.href.split("/").pop();
@@ -42,37 +32,32 @@ const Covid = () => {
 			const sentence = 'Je n\'ai pas compris votre demande'
 			const utterThis = new SpeechSynthesisUtterance(sentence);
 			utterThis.lang = 'fr-FR';
-			console.log({ "response": sentence });
 			window.speechSynthesis.speak(utterThis);
 		}
 	}
 
-	const callAPI = (queryValue) => {
-		console.log("emit event covidsearch : " + queryValue);
+	const callAPI = async (queryValue) => {
 		let exp = ''
-		// queryValue = queryValue.trim()
-		queryValue === 'France' || queryValue === '' ? exp = 'casfrance' : exp = 'casdepartement'
-		console.log(queryValue)
-		console.log('exp : ', exp)
-		sendRequest("covid", exp, { searchValue: queryValue }).then((data) => {
-			if (data.resultText) {
-				const response = data.resultText
-				const sentence = response.nom + ' ' + response.date + ' : ' + response.nouvellesHospitalisations + ' hospitalisations'
-				let utterThis = new SpeechSynthesisUtterance(sentence);
-				utterThis.lang = 'fr-FR';
-				console.log({ "response": data.resultText });
-				// window.speechSynthesis.speak(utterThis);
-				setShortResult(data.resultText)
-			};
-		});
+		queryValue === 'France' || queryValue === '' 
+			? exp = 'casfrance' 
+			: queryValue === 'casdepartements'
+				? exp = 'casdepartements'
+				: exp = 'casdepartement'
+		const data = await sendRequest("covid", exp, { searchValue: queryValue })
+		if (data.resultText) {
+			const resultText = data.resultText
+			let utterThis = new SpeechSynthesisUtterance(resultText);
+			utterThis.lang = 'fr-FR';
+			window.speechSynthesis.speak(utterThis);
+		};
+		setSearchResult(data.result)
 	}
 
 	return (
-		<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+		<div className="mt-4 sm:mx-auto sm:w-full sm:max-w-md">
 			<div className="bg-white pt-3 px-4 shadow sm:rounded-lg sm:px-10">
-				<form className="space-y-6" action="#" method="POST" onSubmit={handleSubmit}>
-					<div className="p-4 bg-gray-200 rounded-md border-b border-gray-200">
-						<div className="mt-1 py-2">
+				<form className="space-y-2" action="#" method="POST" onSubmit={handleSubmit}>
+						<div className="mt-1">
 							<input
 								id="server"
 								name="server"
@@ -93,35 +78,41 @@ const Covid = () => {
 							className="w-full flex justify-center my-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
 							Cas France
 						</button>
-					</div>
+						<button
+							onClick={() => setSearchValue('casdepartements')}
+							type="submit"
+							className="w-full flex justify-center my-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+							Cas départements
+						</button>
 				</form>
-				<br></br>
-
-				<div className="bg-white border-t border-gray-200">
+				<div className="bg-white mt-4 border-t border-gray-200">
 					<VoiceRecognition callback={callbackVoice} />
 				</div>
 			</div>
 
-
-			{shortResult?.nom ?
-				<div className="bg-white pt-3 px-4 shadow sm:rounded-lg sm:px-10">
-					<div className="overflow-hidden">
-						<div className="px-6 py-4 bg-white border-b border-gray-200 font-bold uppercase">
-							{shortResult.nom} - {shortResult.date}
-						</div>
-
-						<div className="p-6 bg-white border-b border-gray-200 text-left">
-							Nouvelles hospitalisations : {shortResult.nouvellesHospitalisations} <br></br>
-                            Nombre total de décès : {shortResult.deces}  <br></br>
-						</div>
-
-						<div className="p-6 bg-white border-gray-200 text-right text-xs">
-							Source : {shortResult.source.nom}
-						</div>
-					</div>
-				</div>
+			{
+				searchResult ?
+					searchResult.map((value, index) => {
+						return (
+							<div key={index} className="bg-white mt-2 pt-3 px-4 shadow sm:rounded-lg sm:px-10">
+								<div className="overflow-hidden">
+									<div className="px-3 bg-white border-b border-gray-200 font-bold uppercase">
+										{value.nom} - {value.date}
+									</div>
+									<div className="p-3 bg-white border-b border-gray-200 text-left">
+										Nouvelles hospitalisations : {value.nouvellesHospitalisations} <br></br>
+										nouvelles réanimations : {value.nouvellesReanimations} <br></br>
+										Nombre total de décès : {value.deces}
+									</div>
+									<div className="p-3 bg-white border-gray-200 text-right text-xs">
+										Source : {value.source.nom}
+									</div>
+								</div>
+							</div>
+						)
+					})
 				:
-				<div></div>
+					<div></div>
 			}
 		</div >
 	);

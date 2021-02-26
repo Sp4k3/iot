@@ -7,7 +7,7 @@ const wikipediaController = (io) => {
   const isActive = true
 
   if (isActive) {
-    scrapWiki(io)
+    sendDetails(io)
   }
 
 
@@ -46,7 +46,7 @@ const whatIs = (req, res, requestUrl) => {
   }
 }
 
-const scrapWiki = (io) => {
+const sendDetails = (io) => {
   io.sockets.on('connection', (socket) => {
     socket.on('wikipediasearch', (searchvalue) => {
       console.log('Search on Wikipedia term : ' + searchvalue)
@@ -93,22 +93,19 @@ const parseDataSend = (data) => {
 }
 
 const parseDataResponse = (response) => {
-  if (response) {
-    if (response.query) {
-      for (const i in response.query.pages) {
-        if (response.query.pages[i].extract) {
-          let textResponse = ''
-          if (response.query.pages[i].extract.indexOf('\n') !== -1) {
-            textResponse = response.query.pages[i].extract.substr(0, response.query.pages[i].extract.indexOf('\n'))
-          } else {
-            textResponse = response.query.pages[i].extract
-          }
-          if (textResponse.length > 300) {
-            textResponse = textResponse.substr(0, textResponse.indexOf('.'))
-          }
-          // console.log(textResponse)
-          return textResponse
+  if (response?.query) {
+    for (const i in response.query.pages) {
+      if (response.query.pages[i].extract) {
+        let textResponse = ''
+        if (response.query.pages[i].extract.indexOf('\n') !== -1) {
+          textResponse = response.query.pages[i].extract.substr(0, response.query.pages[i].extract.indexOf('\n'))
+        } else {
+          textResponse = response.query.pages[i].extract
         }
+        if (textResponse.length > 300) {
+          textResponse = textResponse.substr(0, textResponse.indexOf('.'))
+        }
+        return textResponse
       }
     }
   }

@@ -4,16 +4,16 @@ import PluginActionButton from "./PluginActionButton"
 // import PluginCameraItem from "./PluginCameraItem"
 
 const PluginItem = (props) => {
-    if (props.itemType === "PluginActionButton") {
-        return <PluginActionButton pluginName={props.pluginName} name={props.name} icon={props.icon} action={props.action} data={props.data} />;
-    }
-    // else if (props.itemType === "PluginSwitchButton") {
-    //     return <PluginSwitchButton pluginName={props.pluginName} name={props.name} device={props.device} action={props.action} data={props.data}/>;
-    // }else if(props.itemType==="PluginCameraItem"){
-    //     return <PluginCameraItem pluginName={props.pluginName} name={props.name} data={props.data} />;
-    // }
-    else {
-        return <div></div>;
-    }
+	if (props.itemType === "PluginActionButton") {
+		return <PluginActionButton pluginName={props.pluginName} name={props.name} icon={props.icon} action={props.action} data={props.data} />;
+	}
+	// else if (props.itemType === "PluginSwitchButton") {
+	//     return <PluginSwitchButton pluginName={props.pluginName} name={props.name} device={props.device} action={props.action} data={props.data}/>;
+	// }else if(props.itemType==="PluginCameraItem"){
+	//     return <PluginCameraItem pluginName={props.pluginName} name={props.name} data={props.data} />;
+	// }
+	else {
+		return <div></div>;
+	}
 }
 export default PluginItem

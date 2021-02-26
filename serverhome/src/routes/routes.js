@@ -22,7 +22,6 @@ export default (io) => {
       console.log('Error : ', err)
     } else {
       files.forEach(async file => {
-        // if controller exists add plugin controller url
         const filePath = pluginsFolder + '/' + file + '/controller.js'
         if (fs.existsSync(filePath)) {
           let controller = await import(pluginsFolder + '/' + file + '/controller.js')
@@ -31,8 +30,6 @@ export default (io) => {
             console.log('Setting up plugin : ' + file)
             plugins.push(file)
             router.post('/' + file + '/action/:actionId', controller.postAction)
-            // router.get('/' + file + '/action/:actionId', controller.postAction)
-            // if view exists add plugin view url
             if (controller.getView) {
               router.get('/' + file + '/view', controller.getView)
               pluginsForMenu.push(file)
