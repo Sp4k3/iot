@@ -38,9 +38,9 @@ const Covid = () => {
 
 	const callAPI = async (queryValue) => {
 		let exp = ''
-		queryValue === 'France' || queryValue === '' 
+		queryValue === 'France'
 			? exp = 'casfrance' 
-			: queryValue === 'casdepartements'
+			: queryValue === 'Departements'
 				? exp = 'casdepartements'
 				: exp = 'casdepartement'
 		const data = await sendRequest("covid", exp, { searchValue: queryValue })
@@ -72,18 +72,20 @@ const Covid = () => {
 							className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
 							Recherche
 						</button>
-						<button
-							onClick={() => setSearchValue('')}
-							type="submit"
-							className="w-full flex justify-center my-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-							Cas France
-						</button>
-						<button
-							onClick={() => setSearchValue('casdepartements')}
-							type="submit"
-							className="w-full flex justify-center my-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-							Cas départements
-						</button>
+						<div className="grid grid-cols-2">
+							<button
+								onClick={() => setSearchValue('France')}
+								type="submit"
+								className="w-5/5 flex justify-center mr-1 my-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+								Cas France
+							</button>
+							<button
+								onClick={() => setSearchValue('Departements')}
+								type="submit"
+								className="w-5/5 flex justify-center ml-1 my-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+								Cas départements
+							</button>
+						</div>
 				</form>
 				<div className="bg-white mt-4 border-t border-gray-200">
 					<VoiceRecognition callback={callbackVoice} />
@@ -93,6 +95,8 @@ const Covid = () => {
 			{
 				searchResult ?
 					searchResult.map((value, index) => {
+    				const options = { day: 'numeric',month: 'numeric', year: 'numeric' }
+						value.date = new Date(value.date).toLocaleDateString('fr-FR', options)
 						return (
 							<div key={index} className="bg-white mt-2 pt-3 px-4 shadow sm:rounded-lg sm:px-10">
 								<div className="overflow-hidden">

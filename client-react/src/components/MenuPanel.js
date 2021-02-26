@@ -19,11 +19,13 @@ const MenuPanel = () => {
 	return (
 		<Menu>
 			<a id="home" className="menu-item" href="/">🏠 Home</a>
-			{ plugins.map((plugin, index) => (
-				<a id="{plugin}" key={"pluginLink-" + index} className="menu-item" href={"/plugin/" + plugin}>
-					➡️ {plugin}
-				</a>
-			))}
+			{ 
+				plugins.map((plugin, index) => (
+					<a id="{plugin}" key={"pluginLink-" + index} className="menu-item" href={"/plugin/" + plugin}>
+						➡️ {plugin}
+					</a>
+				))
+			}
 			<a id="home" className="menu-item config-item" href="/configserver">🔧 Configuration</a>
 		</Menu>
 	);

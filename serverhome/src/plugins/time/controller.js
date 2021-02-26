@@ -20,7 +20,7 @@ const timeController = (io) => {
 
 const whatTime = (req, res) => {
   const now = new Date()
-  const response = 'Il est ' + now.getHours() + ' heure ' + now.getMinutes() + '.'
+  const response = 'Il est ' + now.toLocaleTimeString('fr-FR') + '.'
   res.end(JSON.stringify({ resultText: response }))
 }
 
